@@ -1,0 +1,46 @@
+3. 
+Implement queries using MongoDB
+Teacher_id	Teacher_Name	Dept_Name, 	Salary 	Status 
+Pic001 	Ravi 	IT 	30000 	A 
+Pic002 	Mangesh	IT 	20000 	A 
+Pic003 	Akshay	Comp 	25000 	N 
+a.	Create Collection, Insert data into collection,FindAll,findOne(with condition)
+
+ db.createCollection("Teacher")
+ db.Teacher.insert({Teacher_id: "Pic001", Teacher_Name: "Ravi", Dept_Name: "IT", Salary:30000, Status: "A"})
+ db.Teacher.insert({Teacher_id: "Pic002", Teacher_Name: "Mangesh", Dept_Name: "IT",Salary: 20000, Status: "A"})
+ db.Teacher.insert({Teacher_id: "Pic003", Teacher_Name: "Akshay", Dept_Name: "Comp", Salary: 25000, Status: "N"})
+
+ db.Teacher.find();
+ db.Teacher.findOne();
+db.Teacher.findOne({Teacher_id:"Pic003"});
+
+ db.Teacher.findOne({Salary:{$eq: 30000}});
+ db.Teacher.find({Salary:{$eq: 30000}});
+
+b.	Find teacher who is having salary greater than 50000 and status is A
+db.Teacher.find({$and:[{Salary:{$gte: 30000}},{Status:{$eq:"A"}}]}).pretty();
+
+c.	Find teacher who is having salary greater than 50000 OR status is A
+db.Teacher.find({$or:[{Salary:{$gte: 30000}},{Status:{$eq:"A"}}]}).pretty();
+
+d.	Display teacher info in ascending and descending order.
+ db.Teacher.find().sort({key:1}).pretty();
+ db.Teacher.find().sort({key:-1}).pretty();
+
+e.	Find teacher from different departments.
+ db.Teacher.find({Dept_Name: "IT"});
+db.Teacher.find({Dept_Name: "Comp"});
+
+f.	Update dept_name to ETC of techer_id= Pic002
+db.Teacher.update({Teacher_id: "Pic002"},{$set:{Dept_Name:"ENTC"}})
+db.Teacher.find()
+
+g.	Increment the salary of teacher by 10000 who is having Status A
+ db.Teacher.updateMany({},{$inc: {Salary: 10000}})
+db.Teacher.updateMany({Status: "A"},{$inc: {Salary: 10000}})
+db.Teacher.find()
+
+h.	Delete teacher of teacher_id=Pic001
+ db.Teacher.deleteOne({Teacher_id: "Pic001"})
+ db.Teacher.find()

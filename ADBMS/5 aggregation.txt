@@ -1,0 +1,38 @@
+5. Implement aggregation and indexing (all three)
+> db.createCollection("Employee")
+{ "ok" : 1 }
+> db.Employee.insert({Emp_id: 01, Emp_Name: "Emily", Emp_Sal: 10000, Emp_Dept: "IT"});
+WriteResult({ "nInserted" : 1 })
+> db.Employee.insert({Emp_id: 02, Emp_Name: "Christine", Emp_Sal: 15000, Emp_Dept: "IT"});
+WriteResult({ "nInserted" : 1 })
+> db.Employee.insert({Emp_id: 03, Emp_Name: "Alexa", Emp_Sal: 25000, Emp_Dept: "Comp"});
+WriteResult({ "nInserted" : 1 })
+> db.Employee.insert({Emp_id: 04, Emp_Name: "Albert", Emp_Sal: 10000, Emp_Dept: "Comp"});
+WriteResult({ "nInserted" : 1 })
+> db.Employee.insert({Emp_id: 05, Emp_Name: "Annabella", Emp_Sal: 100000, Emp_Dept: "IT"});
+WriteResult({ "nInserted" : 1 })
+> db.Employee.insert({Emp_id: 06, Emp_Name: "Joey", Emp_Sal: 30000, Emp_Dept: "Civil"});
+WriteResult({ "nInserted" : 1 })
+> db.Employee.insert({Emp_id: 07, Emp_Name: "Emma", Emp_Sal: 30000, Emp_Dept: "Mech"});
+WriteResult({ "nInserted" : 1 })
+> db.Employee.insert({Emp_id: 08, Emp_Name: "Ariana", Emp_Sal: 20000, Emp_Dept: "ENTC"});
+WriteResult({ "nInserted" : 1 })
+> db.Employee.find().pretty();
+1. Sum:
+> db.Employee.aggregate({$group:{_id:"$Emp_Dept" ,sum:{$sum:"$Emp_Sal"}}})
+2.Average :
+> db.Employee.aggregate({$group:{_id : "$Emp_Dept, avg :{$avg :  "$Emp_Sal"}}})
+3.Maximum :
+> db.Employee.aggregate({$group:{_id : "$max”, max:{$max :  "$Emp_Sal"}}})
+{ "_id" : “IT”, "max" : 100000 }
+4.Min :
+> db.Employee.aggregate({$group:{_id : "$min”, min:{$min :  "$Emp_Sal"}}})
+{ "_id" : "ENTC", "sum" : 20000 }
+5.Push :
+> db.Employee.aggregate({$group:{_id : "$Emp_Dept", name :{$push : "$Emp_Name"}}})
+{ "_id" : "ENTC", " Emp_Name" : [ "Ariana" ] }
+6. Match:
+> db.Employee.aggregate({$group:{_id:"$Emp_Dept" ,sum:{$sum:"$Emp_Sal"}}},{$match:{sum:{$gte:120000}}})
+{ "_id" : "IT", "sum" : 125000 }
+> db.Employee.aggregate({$group:{_id:"$Emp_Dept" ,sum:{$sum:"$Emp_Sal"}}},{$match:{sum:{$lte:120000}}})
+

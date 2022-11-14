@@ -1,0 +1,74 @@
+Execute at least 10 queries on following database that demonstrates following querying
+techniques:
+	Book(Book_id,Book_Name,Author,Price,No_of_Pages)
+
+
+
+•	Display all books having price greater than 300 using $gt.
+
+> db.Book.find({Price:{$gt: 350}})
+{ "_id" : ObjectId("6361512da2e9accf7753dc06"), "Book_Name" : "Hello its Me", "Author" : "ABCD", "Price" : 4550, "No_of_Pages" : 600 }
+{ "_id" : ObjectId("6361512da2e9accf7753dc07"), "Book_Name" : "Aishwarya", "Author" : "ABCDE", "Price" : 550, "No_of_Pages" : 200 }
+
+•	Display all books having price less than 300 using $lt AND No_of_pages greater than 1000 using $gt.
+> db.Book.find({$and: [{Price:{$gt: 350}},{No_of_Pages:{$gt:200}}]})
+{ "_id" : ObjectId("6361512da2e9accf7753dc06"), "Book_Name" : "Hello its Me", "Author" : "ABCD", "Price" : 4550, "No_of_Pages" : 600 }
+
+•	Display all books having price less than or equal to 300 using $lte ORNo_of_pages greater than or equal to 1000 using $gte.
+> db.Book.find({$or:[{Price:{$lte: 350}},{No_of_Pages:{$gte: 1000}}]}).pretty();
+{
+        "_id" : ObjectId("6361512da2e9accf7753dc05"),
+        "Book_Name" : "Wings of Fire",
+        "Author" : "ABC",
+        "Price" : 350,
+        "No_of_Pages" : 300
+}
+> db.Book.find({$or:[{Price:{$lte: 350}},{No_of_Pages:{$gte: 500}}]}).pretty();
+{
+        "_id" : ObjectId("6361512da2e9accf7753dc05"),
+        "Book_Name" : "Wings of Fire",
+        "Author" : "ABC",
+        "Price" : 350,
+        "No_of_Pages" : 300
+}
+{
+        "_id" : ObjectId("6361512da2e9accf7753dc06"),
+        "Book_Name" : "Hello its Me",
+        "Author" : "ABCD",
+        "Price" : 4550,
+        "No_of_Pages" : 600
+}
+
+•	Use $not.
+> db.Book.find({Price:{$not:{$lte: 400}}}).pretty();
+{
+        "_id" : ObjectId("6361512da2e9accf7753dc06"),
+        "Book_Name" : "Hello its Me",
+        "Author" : "ABCD",
+        "Price" : 4550,
+        "No_of_Pages" : 600
+}
+{
+        "_id" : ObjectId("6361512da2e9accf7753dc07"),
+        "Book_Name" : "Aishwarya",
+        "Author" : "ABCDE",
+        "Price" : 550,
+        "No_of_Pages" : 200
+}
+
+•	Accept a Null value in a document.
+> db.Book.insert({Book_Name: "Random", Author: "Ariana", Price: 700, No_of_Pages: ""})
+WriteResult({ "nInserted" : 1 })
+> db.Book.find();
+{ "_id" : ObjectId("6361512da2e9accf7753dc05"), "Book_Name" : "Wings of Fire", "Author" : "ABC", "Price" : 350, "No_of_Pages" : 300 }
+{ "_id" : ObjectId("6361512da2e9accf7753dc06"), "Book_Name" : "Hello its Me", "Author" : "ABCD", "Price" : 4550, "No_of_Pages" : 600 }
+{ "_id" : ObjectId("6361512da2e9accf7753dc07"), "Book_Name" : "Aishwarya", "Author" : "ABCDE", "Price" : 550, "No_of_Pages" : 200 }
+{ "_id" : ObjectId("636509d625d332a3c95283bf"), "Book_Name" : "Random", "Author" : "Ariana", "Price" : 700, "No_of_Pages" : "" }
+>
+•	Find all books whose name starts with ‘b’ using $regex.
+> db.Book.find({Book_Name: {$regex: /ing/i}})
+{ "_id" : ObjectId("6361512da2e9accf7753dc05"), "Book_Name" : "Wings of Fire", "Author" : "ABC", "Price" : 350, "No_of_Pages" : 300 }
+
+> db.Book.find({Book_Name: {$regex: /rya/i}})
+{ "_id" : ObjectId("6361512da2e9accf7753dc07"), "Book_Name" : "Aishwarya", "Author" : "ABCDE", "Price" : 550, "No_of_Pages" : 200 }
+

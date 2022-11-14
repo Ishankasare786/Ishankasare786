@@ -1,0 +1,31 @@
+10.
+Consider the following database: 
+Employee (emp_no, name, skill, pay rate) 
+
+Insert one document at a time 
+> db.Employee.insert({Emp_No: 1011, Name: "Srinidhi", Skill: "Developer", Pay_Rate: 20000})
+WriteResult({ "nInserted" : 1 })
+
+Insert Multiple documents using batch insert. 
+> db.Employee.insertMany([{Emp_No: 1012, Name: "Ovi", Skill: "Tester", Pay_Rate: 25000},{Emp_No: 1013, Name: "Sanchi", Skill: "Analyst Trainee", Pay_Rate: 35000},{Emp_No: 1014, Name: "Suresh", Skill: "Assistent Trainee", Pay_Rate: 22000},{Emp_No: 1015, Name: "Girish", Skill: "Programmer", Pay_Rate: 29000}])
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("636525c125d332a3c95283d1"),
+                ObjectId("636525c125d332a3c95283d2"),
+                ObjectId("636525c125d332a3c95283d3"),
+                ObjectId("636525c125d332a3c95283d4")
+        ]
+}
+> db.Employee.find()
+{ "_id" : ObjectId("636524d025d332a3c95283d0"), "Emp_No" : 1011, "Name" : "Srinidhi", "Skill" : "Developer", "Pay_Rate" : 20000 }
+{ "_id" : ObjectId("636525c125d332a3c95283d1"), "Emp_No" : 1012, "Name" : "Ovi", "Skill" : "Tester", "Pay_Rate" : 25000 }
+{ "_id" : ObjectId("636525c125d332a3c95283d2"), "Emp_No" : 1013, "Name" : "Sanchi", "Skill" : "Analyst Trainee", "Pay_Rate" : 35000 }
+{ "_id" : ObjectId("636525c125d332a3c95283d3"), "Emp_No" : 1014, "Name" : "Suresh", "Skill" : "Assistent Trainee", "Pay_Rate" : 22000 }
+{ "_id" : ObjectId("636525c125d332a3c95283d4"), "Emp_No" : 1015, "Name" : "Girish", "Skill" : "Programmer", "Pay_Rate" : 29000 }
+
+Remove a document using $where. 
+> db.Employee.remove({$where: function() {return (this.Emp_No == "1013")}});
+WriteResult({ "nRemoved" : 1 })
+
+
